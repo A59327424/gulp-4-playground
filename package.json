@@ -1,0 +1,34 @@
+{
+  "name": "gulp-playground",
+  "version": "0.1.0",
+  "description": "Experimental front-end tasks with gulp 4",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^4.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hey259/gulp-4-playground.git"
+  },
+  "keywords": [
+    "gulp",
+    "front-end",
+    "javascript",
+    "css",
+    "html"
+  ],
+  "author": "hEy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hey259/gulp-4-playground/issues"
+  },
+  "homepage": "https://github.com/hey259/gulp-4-playground#readme"
+}
