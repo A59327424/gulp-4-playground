@@ -1,10 +1,11 @@
 //* Load stuff
 const gulp = require('gulp');
 
-let rename = require("gulp-rename");
+let args = require('yargs').argv;
+let rename = require('gulp-rename');
 let sourcemaps = require('gulp-sourcemaps');
 let concat = require('gulp-concat');
-let filter = require('gulp-filter');
+let filterif = require('gulp-if');
 
 let uglify = require('gulp-uglify');
 let pipeline = require('readable-stream').pipeline;
@@ -12,38 +13,37 @@ let pipeline = require('readable-stream').pipeline;
 /**
  * build_pluginsjs
  *
- * Concat plugin files
+ * Bundle plugins javascript files
+ * Create sourcemap
+ * Minify 
+ * filters already minified files using glob
+ * Concatenate
  * 
  */
-
 function build_pluginsjs(cb)
 {
 		let plugins = require('./src/js/plugins_draft.js');
-		const filtered = filter(['*.min.*'], {restore: true});
-
-
-		return pipeline(
-	    gulp.src(plugins),
-	    rename('plugins.min.js'),
-	    sourcemaps.init({ loadMaps: true }),
-	    filtered,
-	    uglify(),
-	    filtered.restore,
-	    concat('plugins.min.js', {newLine: '\r\n'}),
-	    sourcemaps.write('./'),
-	    gulp.dest('./public_html/js/')
-	  );
-
-		//return gulp.src(plugins)
-		//	.pipe(filtered)
-		//	.pipe(uglify())
-		//	.pipe(filtered.restore)
-		//	.pipe(concat('plugins.min.js'), {newLine: '\r\n'})
-		//	.pipe(sourcemaps.init({ loadMaps: true }))
-		//	.pipe(sourcemaps.write('./'))
-		//  .pipe(gulp.dest('./public_html/js/'));
+	  
+	  /** Filter minified files using gulp-if */
+	  return gulp.src(plugins)
+			.pipe(sourcemaps.init({ loadMaps: true }))
+			.pipe(filterif(['*', '!.min.'], uglify({ output: { comments: /^!/i } })))
+			.pipe(concat('plugins.min.js'), { newLine: '\r\n' })
+			.pipe(sourcemaps.write('./'))
+		  .pipe(gulp.dest('./public_html/js/'));
     
 	cb();
 }
 
+
+function gulp_arg(cb)
+{
+	var dest = args.destination ? args.destination : 'dist';
+	console.log(dest);
+
+	cb();
+}
+
 exports.build_pluginsjs = build_pluginsjs;
+
+exports.gulp_arg = gulp_arg;
