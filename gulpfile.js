@@ -13,7 +13,7 @@ let pipeline = require('readable-stream').pipeline;
 /**
  * build_pluginsjs
  *
- * Bundle plugins javascript files
+ * Bundle javascript files
  * Create sourcemap
  * Minify 
  * filters already minified files using glob
